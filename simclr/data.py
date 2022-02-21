@@ -1,29 +1,25 @@
+import collections
+import csv
 import math
 import os
-import numpy as np
+
 import cv2
-from PIL import Image
-
-from torch.utils.data import Dataset, DataLoader
-from torch.utils.data.sampler import SubsetRandomSampler
-import torchvision.transforms as transforms
-from torchvision import datasets
-
-import os
-import torch
-from torch.utils.data import Dataset, DataLoader
-from torchvision.transforms import transforms
 import numpy as np
-import collections
+import torch
+import torchvision.transforms as transforms
 from PIL import Image
-import csv
+from torch.utils.data import DataLoader, Dataset
+from torch.utils.data.sampler import SubsetRandomSampler
+from torchvision import datasets
+from torchvision.transforms import InterpolationMode, transforms
+
 
 class MimgNetDataset(Dataset):
     def __init__(self, root, mode, resize=84, simclr=False):
         self.simclr=simclr
         if simclr:
             rnd_resizedcrop = transforms.RandomResizedCrop(
-                size=resize, scale=(0.08, 1.0), ratio=(0.75, 1.3333333333333333), interpolation=2
+                size=resize, scale=(0.08, 1.0), ratio=(0.75, 1.3333333333333333), interpolation=InterpolationMode.BILINEAR
             )
             rnd_hflip = transforms.RandomHorizontalFlip(p=0.5)
             color_jitter = transforms.ColorJitter(brightness=0.8, contrast=0.8, saturation=0.8, hue=0.2)
